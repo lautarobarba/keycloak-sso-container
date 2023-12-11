@@ -1,0 +1,24 @@
+version: "3.8"
+name: keycloak
+services:
+  keycloak:
+    container_name: keycloak
+    image: bitnami/keycloak:22
+    env_file: .env
+    environment:
+      - KEYCLOAK_HTTP_PORT=${APP_PORT}
+      - KEYCLOAK_HTTP_RELATIVE_PATH=/auth
+      - KEYCLOAK_ADMIN_USER=${KADMIN_USER}
+      - KEYCLOAK_ADMIN_PASSWORD=${KADMIN_PASSWORD}
+
+      # Postgres connection parameters:
+      - KEYCLOAK_DATABASE_HOST=${DB_HOST}
+      - KEYCLOAK_DATABASE_PORT=${DB_PORT}
+      - KEYCLOAK_DATABASE_USER=${DB_USER}
+      - KEYCLOAK_DATABASE_PASSWORD=${DB_PASSWORD}
+      - KEYCLOAK_DATABASE_NAME=${DB_NAME}
+    restart: always
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    extra_hosts:
+      - host.docker.internal:host-gateway
